@@ -1,0 +1,10 @@
+* Development Log
+** 2023-11-02
+
+After experimenting with the nix package manager, nixos, and nix flakes, I decided to start over. I have a powerful machine that I'd like to run AI workloads on, and I'd like to enable my coworkers to use the machine as well. Nix's promises of reproducability and auditibility seemed like a good choice for this, but ultimately I found it difficult to install the exact set of packages I needed for each project, and I also couldn't imagine walking my coworkers through the (nix) process of setting up their custom environments. Today I will try to set things up with ansible and ubuntu server instead, because I suspect this will be a much smoother learning curve (while still giving me the benefits of having documentation of what kinds of changes I've made to the base system.)
+
+I downloaded an iso of Ubuntu Server 23.10 and created an installation drive. ~udev~ made my usb drive available at ~/dev/sda~ :
+
+#+begin_src bash
+dd bs=4M if=./ubuntu-23.10-live-server-amd64.iso of=/dev/sda status=progress oflag=sync
+#+end_src
