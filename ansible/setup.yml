@@ -6,6 +6,8 @@
     libtinfo5_deb: "/tmp/libtinfo5_6.4-2_amd64.deb"
   become: yes
   tasks:
+    # -------------------------- DOCKER -------------------------- #
+
     - name: Add Docker GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -27,6 +29,9 @@
         name: john
         groups: docker
         append: yes
+    # -------------------------- END DOCKER -------------------------- #
+
+    # -------------------------- CUDA -------------------------- #
 
     # NOTE: The latest version of GCC (13.2.0 at the time of this comment) is newer than what CUDA supports.
     # When trying to compile a cuda program with nvcc, it issues this error:
@@ -112,6 +117,56 @@
           #!/bin/sh
           export PATH=$PATH:/usr/local/cuda/bin
 
+    # -------------------------- END CUDA -------------------------- #
+
+    # -------------------------- NVIDIA-CONTAINER-TOOLKIT -------------------------- #
+
+    - name: Add the NVIDIA repository key
+      ansible.builtin.apt_key:
+        url: https://nvidia.github.io/libnvidia-container/gpgkey
+        keyring: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+
+    - name: Add the NVIDIA repository
+      ansible.builtin.apt_repository:
+        # NOTE: Here I reached a warning by NVIDIA that I was using an unsupported distribution.
+        # Again the problem was that I chose ubuntu 23.10 rather than one of their officially supported variations, like 22.04.
+        #
+        # repo: deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb mantic main
+        #
+        # The workaround I chose was to use the ubuntu 22.04 repository, but if things don't work correctly, I will consider restarting from scratch with ubuntu 22.04.
+        repo: deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/ubuntu22.04/ nvidia-container-toolkit main
+        state: present
+        update_cache: no
+
+    # NOTE: This is necessary because of the version mismatch.
+    - name: Correct NVIDIA repository entry
+      ansible.builtin.lineinfile:
+        path: /etc/apt/sources.list.d/nvidia_github_io_libnvidia_container_stable_ubuntu22_04.list
+        regexp: ".*nvidia-container-toolkit.*"
+        line: "deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/amd64 /"
+        state: present
+
+    - name: Update Repositories
+      apt:
+        update_cache: yes
+
+    - name: Install nvidia-container-toolkit
+      ansible.builtin.apt:
+        name: nvidia-container-toolkit
+        update_cache: yes
+        state: present
+
+    - name: Configure NVIDIA Container Runtime for Docker
+      command: nvidia-ctk runtime configure --runtime=docker
+
+    - name: Restart Docker
+      systemd:
+        name: docker
+        state: restarted
+        daemon_reload: yes
+
+    # -------------------------- END NVIDIA-CONTAINER-TOOLKIT -------------------------- #
+
     - name: Install nice-to-have packages
       apt:
         name:
@@ -122,3 +177,8 @@
           - iftop
           - net-tools
         state: latest
+
+  handlers:
+    - name: Run apt-get update
+      ansible.builtin.apt:
+        update_cache: yes

@@ -1,5 +1,6 @@
 * Development Log
 ** 2023-11-02
+*** Initial Setup
 
 After experimenting with the nix package manager, nixos, and nix flakes, I decided to start over. I have a powerful machine that I'd like to run AI workloads on, and I'd like to enable my coworkers to use the machine as well. Nix's promises of reproducability and auditibility seemed like a good choice for this, but ultimately I found it difficult to install the exact set of packages I needed for each project, and I also couldn't imagine walking my coworkers through the (nix) process of setting up their custom environments. Today I will try to set things up with ansible and ubuntu server instead, because I suspect this will be a much smoother learning curve (while still giving me the benefits of having documentation of what kinds of changes I've made to the base system.)
 
@@ -18,3 +19,8 @@ I gradually wrote setup.yml to include all the packages I needed. The system I h
 - Write a dockerfile (or find an existing image) that I could use to run jupyter lab with all of the dependencies I needed for fastai's fastbook project.
 
 After this, I could repeat the last step for any other project. As long as I kept all the configuration of the first two layers in ansible, I figured I'd have about as reproducable a setup as I could hope for. It's not quite as "locked in" as a nix solution would be -- but in truth I couldn't get a nix solution up and running reliably in a few days, and I didn't think spending a few more days on it was a good idea given that I thought I could set things up on ubuntu in a matter of hours.
+
+
+*** NVIDIA Container Toolkit
+
+The [[https://github.com/NVIDIA/nvidia-container-toolkit][NVIDIA Container Toolkit]] allows users to build and run GPU accelerated containers.
