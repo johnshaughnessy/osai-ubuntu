@@ -12,6 +12,7 @@ services:
     volumes:
       - ./data/:/app/data/
     command: /app/data/sleep.sh
+    shm_size: "32gb"
     deploy:
       resources:
         reservations:
