@@ -1,0 +1,48 @@
+---
+- name: Uninstall NVIDIA Drivers and CUDA Toolkit
+  hosts: all
+  become: true
+  tasks:
+    - name: Remove CUDA Toolkit
+      apt:
+        name: "{{ item }}"
+        state: absent
+        purge: true
+      loop:
+        - "*cuda*"
+        - "*cublas*"
+        - "*cufft*"
+        - "*cufile*"
+        - "*curand*"
+        - "*cusolver*"
+        - "*cusparse*"
+        - "*gds-tools*"
+        - "*npp*"
+        - "*nvjpeg*"
+        - "nsight*"
+        - "*nvvm*"
+
+    - name: Remove NVIDIA Drivers
+      apt:
+        name: "{{ item }}"
+        state: absent
+        purge: true
+      loop:
+        - "*nvidia*"
+        - "libxnvctrl*"
+
+    - name: Auto-remove unnecessary packages
+      apt:
+        autoremove: yes
+        purge: yes
+
+    - name: Remove the CUDA keyring package
+      apt:
+        name: "cuda-keyring"
+        state: absent
+        purge: true
+
+    - name: Remove the NVIDIA repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /"
+        state: absent
