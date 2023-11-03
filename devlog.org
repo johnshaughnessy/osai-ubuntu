@@ -24,3 +24,9 @@ After this, I could repeat the last step for any other project. As long as I kep
 *** NVIDIA Container Toolkit
 
 The [[https://github.com/NVIDIA/nvidia-container-toolkit][NVIDIA Container Toolkit]] allows users to build and run GPU accelerated containers.
+
+I created a test docker image and python script that will confirm that cuda and pytorch are working well together inside the docker container.
+
+*** Documentation
+
+I am _probably_ the only person who is going to use this setup, but one of my goals is to help other developers (my coworkers and anyone else) with these kinds of problems. I learned a little bit about all of the dependencies by doing this exercise, and figure that it may be valuable to write things down.
