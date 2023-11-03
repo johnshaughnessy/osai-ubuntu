@@ -6,17 +6,53 @@
     libtinfo5_deb: "/tmp/libtinfo5_6.4-2_amd64.deb"
   become: yes
   tasks:
-    # -------------------------- DOCKER -------------------------- #
+    - name: Install nice-to-have packages
+      apt:
+        name:
+          - bat #batcat
+          - curl
+          - git
+          - htop
+          - iftop
+          - net-tools
+          - tree
+        state: latest
 
-    - name: Add Docker GPG key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
+    # -------------------------- DOCKER -------------------------- #
+    - name: Install prerequisites for Docker GPG key
+      apt:
+        pkg:
+          - ca-certificates
+          - curl
+          - gnupg
+        update_cache: yes
+
+    - name: Ensure /etc/apt/keyrings directory exists
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Add Docker's official GPG key
+      shell: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+      args:
+        creates: /etc/apt/keyrings/docker.gpg
+
+    - name: Set correct permissions for Docker GPG key
+      file:
+        path: /etc/apt/keyrings/docker.gpg
+        mode: "a+r"
 
     - name: Add Docker repository
       apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
         state: present
+        filename: docker
+
+    - name: Update Repositories
+      apt:
+        update_cache: yes
 
     - name: Install Docker
       apt:
@@ -71,6 +107,7 @@
       get_url:
         url: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
         dest: /tmp/cuda-keyring_1.1-1_all.deb
+        force: no
 
     - name: Install CUDA Keyring Package
       command:
@@ -87,6 +124,7 @@
       get_url:
         url: "{{ libtinfo5_url }}"
         dest: "{{ libtinfo5_deb }}"
+        force: no
 
     - name: Install libtinfo5 package
       ansible.builtin.apt:
@@ -121,30 +159,19 @@
 
     # -------------------------- NVIDIA-CONTAINER-TOOLKIT -------------------------- #
 
-    - name: Add the NVIDIA repository key
-      ansible.builtin.apt_key:
-        url: https://nvidia.github.io/libnvidia-container/gpgkey
-        keyring: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+    - name: Download the NVIDIA repository GPG key if it does not exist
+      shell: |
+        if [ ! -f /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg ]; then
+          curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+        fi
+      args:
+        creates: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 
     - name: Add the NVIDIA repository
-      ansible.builtin.apt_repository:
-        # NOTE: Here I reached a warning by NVIDIA that I was using an unsupported distribution.
-        # Again the problem was that I chose ubuntu 23.10 rather than one of their officially supported variations, like 22.04.
-        #
-        # repo: deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb mantic main
-        #
-        # The workaround I chose was to use the ubuntu 22.04 repository, but if things don't work correctly, I will consider restarting from scratch with ubuntu 22.04.
-        repo: deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/ubuntu22.04/ nvidia-container-toolkit main
-        state: present
-        update_cache: no
-
-    # NOTE: This is necessary because of the version mismatch.
-    - name: Correct NVIDIA repository entry
-      ansible.builtin.lineinfile:
-        path: /etc/apt/sources.list.d/nvidia_github_io_libnvidia_container_stable_ubuntu22_04.list
-        regexp: ".*nvidia-container-toolkit.*"
-        line: "deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/amd64 /"
-        state: present
+      shell: |
+        echo "deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/amd64 /" | tee /etc/apt/sources.list.d/nvidia_github_io_libnvidia_container_stable_ubuntu22_04.list
+      args:
+        creates: /etc/apt/sources.list.d/nvidia_github_io_libnvidia_container_stable_ubuntu22_04.list
 
     - name: Update Repositories
       apt:
@@ -167,18 +194,34 @@
 
     # -------------------------- END NVIDIA-CONTAINER-TOOLKIT -------------------------- #
 
-    - name: Install nice-to-have packages
+    # -------------------------- GOOGLE CLOUD CLI -------------------------- #
+    - name: Install gcloud cli dependencies
       apt:
         name:
-          - bat #batcat
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
           - curl
-          - git
-          - htop
-          - iftop
-          - net-tools
+          - sudo
         state: latest
 
-  handlers:
-    - name: Run apt-get update
+    - name: Ensure google-cloud-sdk.list exists and contains the required repo line
+      ansible.builtin.lineinfile:
+        path: /etc/apt/sources.list.d/google-cloud-sdk.list
+        line: "deb [signed-by=/usr/share/keyrings/cloud.google.asc] https://packages.cloud.google.com/apt cloud-sdk main"
+        create: yes
+        state: present
+
+    - name: Download cloud.google.asc if it does not exist
+      ansible.builtin.get_url:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        dest: /usr/share/keyrings/cloud.google.asc
+        force: no
+
+    - name: Update APT cache and install gcloud CLI
       ansible.builtin.apt:
         update_cache: yes
+        name: google-cloud-cli
+        state: present
+
+    # -------------------------- END GOOGLE CLOUD CLI -------------------------- #
