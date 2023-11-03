@@ -1,18 +1,6 @@
 # Use an official NVIDIA CUDA base image
-# FROM nvidia/cuda:12.3-devel-ubuntu22.04
-FROM nvidia/cuda:12.2.2-devel-ubuntu22.04
+FROM us-central1-docker.pkg.dev/hubs-dev-333333/ocho-osai/osai-ubuntu/cuda-pip-torch:ubuntu23.10
 
-# Set a working directory
-WORKDIR /app
+RUN pip install fastbook
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3-pip \
-    python3-dev && \
-    rm -rf /var/lib/apt/lists/*
-
-# Upgrade pip
-RUN python3 -m pip install --upgrade pip
-
-# Install PyTorch compatible with CUDA 12.3 (adjust the version as needed)
-RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu123
+RUN apt-get update && apt-get install -y graphviz

@@ -1,6 +1,6 @@
 ### Building a base layer image
 
-The ~base~ directory contains dockerfiles that define a set of useful base layers.
+The `base` directory contains dockerfiles that define a set of useful base layers.
 
 ```sh
 gcloud auth login
@@ -14,3 +14,5 @@ docker run --rm --gpus all -it us-central1-docker.pkg.dev/hubs-dev-333333/ocho-o
 
 docker push us-central1-docker.pkg.dev/hubs-dev-333333/ocho-osai/osai-ubuntu/cuda-pip-torch:ubuntu23.10
 ```
+
+Unfortunately, the base images are ~14GB, which means that (at least for me), uploading the image to the registry takes quite a long time. You may have an easier time building the image.

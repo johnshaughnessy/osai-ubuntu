@@ -18,4 +18,4 @@ services:
           devices:
             - driver: nvidia
               count: all
-              capabilities: ["nvidia-compute", "nvidia-utility"] # "nvidia-graphics", "nvidia-display"
+              capabilities: ["compute", "utility"] # "nvidia-graphics", "nvidia-display"
