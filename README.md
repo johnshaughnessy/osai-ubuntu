@@ -4,10 +4,8 @@ Scripts to help set up `cuda`, `docker`, and `nvidia-container-runtime` from a n
 
 The setup scripts assume you have a `control node` and a `target node`:
 
-- The `control node` is the computer that you are running ansible commands from.
-- The `target node` is the (remote) computer that you are running the commands _on_.
-
-Your goal is to configure the target node.
+- The `control node` is the computer where you will issue `ansible` commands.
+- The `target node` is the (remote) computer that you are trying to configure.
 
 ## Prerequisites
 
@@ -44,6 +42,8 @@ Run the ansible setup script from inside the ansible directory:
 cd ansible/
 ansible-playbook setup.yml --ask-become-pass
 ```
+
+> Some of the steps in the playbook take several minutes to complete.
 
 ## Testing the target node
 

@@ -28,6 +28,8 @@ Then, build the docker image:
 docker build -t nvidia-ctk-test:latest .
 ```
 
+> Building the image may take several minutes to complete the first time.
+
 And run it:
 
 ```sh
