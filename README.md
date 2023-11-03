@@ -78,3 +78,15 @@ Device name: NVIDIA GeForce RTX 4090
 CUDA Device 1: NVIDIA GeForce RTX 4090
 Device name: NVIDIA GeForce RTX 4090
 ```
+
+## Running `fastbook` in a jupyter notebook.
+
+Navigate to the `fastbook` directory. Follow the instructions in `fastbook/README.md`.
+
+## Creating your own projects
+
+It takes several minutes to create docker images from scratch. It is faster to download them.
+
+Docker images with a base set of capabilities are built and uploaded to a Mozilla artifact registry on GCP. Use of these pre-built images is currently restricted.
+
+Read `base/README.md` for more information.

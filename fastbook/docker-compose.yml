@@ -1,0 +1,21 @@
+version: "3.1"
+services:
+  fastbook-container:
+    image: fastbook-container:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - IP=0.0.0.0
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data/:/app/data/
+    command: /app/data/sleep.sh
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: ["nvidia-compute", "nvidia-utility"] # "nvidia-graphics", "nvidia-display"
