@@ -1,4 +1,15 @@
 * Development Log
+** 2023-11-25
+*** Tightening up
+When I initially ran through setup, I used Ubuntu Server 23.10 because it was the latest version available. In retrospect, things would have been easier on Ubuntu Server 22.04 because NVIDIA officially supports ~cuda~ and ~nvidia-container-toolkit~ on 22.04. I was able to get everything working, but since ~pytorch~, ~cuda~, and ~nvidia~ driver dependencies are notoriously tricky for new users to get right, I decided to redo setup on 22.04 so that I can reduce risk of confusion / misconfiguration.
+
+So, I will need to:
+- Create a new installation media with Ubuntu Server 22.04
+- Install Ubuntu Server 22.04
+- Redo setup
+
+This will also give me the chance to verify that everything is working as expected, as it's easy when working with ansible to run a step and then delete it from the setup script so that future installations don't work as intended, or to do things out of order as you're the setup script is being written.
+
 ** 2023-11-02
 *** Initial Setup
 

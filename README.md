@@ -11,7 +11,7 @@ The setup scripts assume you have a `control node` and a `target node`:
 
 Setup starts with a new copy of Ubuntu Server 23.10 on the target node.
 
-> In retrospect, things would have been easier with 22.04, because NVIDIA officially support `cuda` and `nvidia-container-toolkit` on ubuntu 22.04.
+> In retrospect, things would have been easier with 22.04, because NVIDIA officially supports `cuda` and `nvidia-container-toolkit` on ubuntu 22.04.
 
 In order to run the `ansible` setup script:
 
