@@ -101,7 +101,21 @@ Installing `NVIDIA` drivers and packages can be confusing. Here is a simplified 
 
 With this set up, each application can be isolated in its own container. Applications relying on different versions of python, pytorch, or CUDA can be configured independently (without using python `venvs`.)
 
-In practice, the `apt-cache` dependency graph ends up looking a bit more complicated than the diagram above. A slightly more accurate picture (with specific version numbers) is available in ["nvidia-dependencies-simple.png"](/nvidia-dependencies-simple.png). An even more detailed (but still incomplete) picture is available in [nvidia-dependencies.png](/nvidia-dependencies.png).
+In practice, the `apt-cache` dependency graph ends up looking a bit more complicated than the diagram above.
+
+A slightly more accurate picture (with specific version numbers) is available here:
+
+<details>
+<summary>nvidia-dependencies-simple.png</summary>
+<img src="/nvidia-dependencies-simple.png" alt="NVIDIA Container Toolkit simple graph" title="NVIDIA Container Toolkit simple graph">
+</details>
+
+An even more detailed (but still incomplete) picture is available here:
+
+<details>
+<summary>nvidia-dependencies.png</summary>
+<img src="/nvidia-dependencies.png" alt="NVIDIA Container Toolkit graph" title="NVIDIA Container Toolkit graph">
+</details>
 
 If you are curious and want to inspect the dependency graph yourself, you can use:
 
