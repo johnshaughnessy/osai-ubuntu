@@ -1,22 +1,39 @@
-// Generate the graph with:
-//   dot -Tpng nvidia-dependencies-simple.dot -o nvidia-dependencies-simple.png
-
 digraph dependencies {
+    pad=0.2
+    bgcolor=transparent
+
+    node [shape=box, style="rounded,filled", color="#de8f05", fontcolor="black", penwidth=4, fontsize=22];
+
+    "cuda" -> "cuda-12-3";
     "cuda-12-3" -> "cuda-runtime-12-3";
     "cuda-12-3" -> "cuda-toolkit-12-3";
     "cuda-12-3" -> "cuda-demo-suite-12-3";
     "cuda-runtime-12-3" -> "cuda-libraries-12-3";
     "cuda-runtime-12-3" -> "cuda-drivers";
     "cuda-toolkit-12-3" -> "cuda-libraries-12-3";
-    "cuda-toolkit-12-3" -> "other cuda-toolkit dependencies";
     "cuda-drivers" -> "cuda-drivers-545";
-    "cuda-drivers-545" -> "shared-dependencies";
-    "cuda-drivers-545" -> "other cuda-drivers-545 dependencies";
-    "cuda-drivers-545" -> "nvidia-driver-545";
+    "cuda-drivers-545" -> "label"
+    "label" -> "nvidia-driver-545" ;
+    "label" [color="#cccccc", style="rounded,filled", fontsize="22", fontcolor="black", label="NVIDIA Container Toolkit",]
 
-    "nvidia-driver-545" -> "shared-dependencies";
-    "nvidia-driver-545" -> "nvidia-driver-545-dependencies";
+    "nvidia-driver-545" [color="#91DDF2", fontcolor="black"];
 
-    // Attributes
-    node [shape=box];
+    subgraph cluster_legend {
+        style="rounded,filled";
+        color="#cccccc";
+        edge [style=invis];
+        docker [label="Installed in Docker Container", shape=box, style="rounded,filled", color="#de8f05", fontcolor="black"];
+        host [label="Installed on Host", shape=box, style="rounded,filled", color="#91DDF2", fontcolor="black"];
+        docker -> label2
+        label2 -> host
+        "label2" [color="#cccccc", style="rounded,filled", fontsize="22", fontcolor="black", label="NVIDIA Container Toolkit \n exposes the nvidia driver\nto the container",]
+
+    }
+
+    // "docker" -> "host"
+    // HACK: Use invisible nodes to create space
+
+    docker -> label [style="invis"];
+    label -> host [style="invis"];
+
 }
