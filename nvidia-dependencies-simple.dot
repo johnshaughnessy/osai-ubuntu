@@ -16,9 +16,9 @@ digraph dependencies {
     "cuda-runtime-12-3" -> "cuda-drivers";
     "cuda-toolkit-12-3" -> "cuda-libraries-12-3";
     "cuda-drivers" -> "cuda-drivers-545";
-    "cuda-drivers-545" -> "label"
+    "cuda-drivers-545" -> "label" [dir="none"]
     "label" -> "nvidia-driver-545" ;
-    "label" [color="#cccccc", style="rounded,filled", fontsize="22", fontcolor="black", label="NVIDIA Container Toolkit",]
+    "label" [color="#cccccc", style="rounded,filled", fontsize="20", fontcolor="black", label="NVIDIA Container Toolkit",]
 
     "nvidia-driver-545" [color="#91DDF2", fontcolor="black"];
 
