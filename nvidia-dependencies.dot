@@ -1,0 +1,52 @@
+// Generate the graph with:
+//   dot -Tpng nvidia-dependencies.dot -o nvidia-dependencies.png
+
+digraph dependencies {
+    // Define nodes
+    "cuda" -> "cuda-12-3";
+    "cuda-12-3" -> "cuda-runtime-12-3";
+    "cuda-12-3" -> "cuda-toolkit-12-3";
+    "cuda-12-3" -> "cuda-demo-suite-12-3";
+    "cuda-runtime-12-3" -> "cuda-libraries-12-3";
+    "cuda-runtime-12-3" -> "cuda-drivers";
+    "cuda-toolkit-12-3" -> "cuda-compiler-12-3";
+    "cuda-toolkit-12-3" -> "cuda-libraries-12-3";
+    "cuda-toolkit-12-3" -> "cuda-libraries-dev-12-3";
+    "cuda-toolkit-12-3" -> "cuda-tools-12-3";
+    "cuda-toolkit-12-3" -> "cuda-documentation-12-3";
+    "cuda-toolkit-12-3" -> "cuda-nvml-dev-12-3";
+    "cuda-drivers" -> "cuda-drivers-545";
+    "cuda-drivers-545" -> "libnvidia-common-545";
+    "cuda-drivers-545" -> "libnvidia-compute-545";
+    "cuda-drivers-545" -> "libnvidia-decode-545";
+    "cuda-drivers-545" -> "libnvidia-encode-545";
+    "cuda-drivers-545" -> "libnvidia-fbc1-545";
+    "cuda-drivers-545" -> "libnvidia-gl-545";
+    "cuda-drivers-545" -> "nvidia-compute-utils-545";
+    "cuda-drivers-545" -> "nvidia-dkms-545";
+    "cuda-drivers-545" -> "nvidia-driver-545";
+    "cuda-drivers-545" -> "nvidia-kernel-common-545";
+    "cuda-drivers-545" -> "nvidia-kernel-source-545";
+    "cuda-drivers-545" -> "nvidia-kernel-open-545";
+    "cuda-drivers-545" -> "nvidia-utils-545";
+    "cuda-drivers-545" -> "xserver-xorg-video-nvidia-545";
+    "cuda-drivers-545" -> "nvidia-modprobe";
+    "cuda-drivers-545" -> "nvidia-settings";
+
+    "nvidia-driver-545" -> "libnvidia-gl-545";
+    "nvidia-driver-545" -> "nvidia-dkms-545";
+    "nvidia-driver-545" -> "nvidia-kernel-source-545";
+    "nvidia-driver-545" -> "nvidia-kernel-open-545";
+    "nvidia-driver-545" -> "libnvidia-compute-545";
+    "nvidia-driver-545" -> "libnvidia-extra-545";
+    "nvidia-driver-545" -> "nvidia-compute-utils-545";
+    "nvidia-driver-545" -> "libnvidia-decode-545";
+    "nvidia-driver-545" -> "libnvidia-encode-545";
+    "nvidia-driver-545" -> "nvidia-utils-545";
+    "nvidia-driver-545" -> "xserver-xorg-video-nvidia-545";
+    "nvidia-driver-545" -> "libnvidia-cfg1-545";
+    "nvidia-driver-545" -> "libnvidia-fbc1-545";
+
+    // Attributes
+    node [shape=box];
+}

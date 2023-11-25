@@ -1,0 +1,22 @@
+// Generate the graph with:
+//   dot -Tpng nvidia-dependencies-simple.dot -o nvidia-dependencies-simple.png
+
+digraph dependencies {
+    "cuda-12-3" -> "cuda-runtime-12-3";
+    "cuda-12-3" -> "cuda-toolkit-12-3";
+    "cuda-12-3" -> "cuda-demo-suite-12-3";
+    "cuda-runtime-12-3" -> "cuda-libraries-12-3";
+    "cuda-runtime-12-3" -> "cuda-drivers";
+    "cuda-toolkit-12-3" -> "cuda-libraries-12-3";
+    "cuda-toolkit-12-3" -> "other cuda-toolkit dependencies";
+    "cuda-drivers" -> "cuda-drivers-545";
+    "cuda-drivers-545" -> "shared-dependencies";
+    "cuda-drivers-545" -> "other cuda-drivers-545 dependencies";
+    "cuda-drivers-545" -> "nvidia-driver-545";
+
+    "nvidia-driver-545" -> "shared-dependencies";
+    "nvidia-driver-545" -> "nvidia-driver-545-dependencies";
+
+    // Attributes
+    node [shape=box];
+}
