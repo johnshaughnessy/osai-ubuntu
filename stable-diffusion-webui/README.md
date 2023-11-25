@@ -21,19 +21,3 @@ I don't want a copy of the repo inside of this one, so I will be using .gitignor
 For first-time setup, run `init.sh`.
 
 After that, run `run.sh`.
-
-```sh
-./init.sh
-
-```
-
-kk
-
-```
-
-
-
-run.sh
-
-
-```
