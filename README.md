@@ -118,3 +118,21 @@ Once the base system is set up, users are encouraged to create a new docker cont
 
 - For development, the `cuda` package (which includes both the `cuda-runtime`, `cuda-toolkit`, and some example programs) is usually best. Users may install `cuda-runtime` and `cuda-toolkit` instead of `cuda` for a smaller image (because the example programs will be omitted).
 - For running applications, it may be enough to just install the `cuda-runtime` without `cuda-toolkit`.
+
+## Using ssh-agent to interact with github
+
+You can use `ssh-agent` to avoid storing your github password or access tokens on target machine.
+
+```sh
+# Start ssh-agent from the control node:
+eval $(ssh-agent)
+# Add your github key:
+ssh-add ~/.ssh/keys/johnshaughnessy@github.com
+# Connect to the target node:
+ssh osai-redwood
+# Use git commands as usual
+```
+
+Note that you will want to set your `git remote` urls to the `ssh` variant:
+
+![github ssh](/github_ssh.png "Github SSH")
