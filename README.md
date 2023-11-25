@@ -106,14 +106,14 @@ In practice, the `apt-cache` dependency graph ends up looking a bit more complic
 A slightly more accurate picture (with specific version numbers) is available here:
 
 <details>
-<summary>nvidia-dependencies-simple.png</summary>
+<summary>Click to expand nvidia-dependencies-simple.png</summary>
 <img src="/nvidia-dependencies-simple.png" alt="NVIDIA Container Toolkit simple graph" title="NVIDIA Container Toolkit simple graph">
 </details>
 
 An even more detailed (but still incomplete) picture is available here:
 
 <details>
-<summary>nvidia-dependencies.png</summary>
+<summary>Click to expand nvidia-dependencies.png</summary>
 <img src="/nvidia-dependencies.png" alt="NVIDIA Container Toolkit graph" title="NVIDIA Container Toolkit graph">
 </details>
 
