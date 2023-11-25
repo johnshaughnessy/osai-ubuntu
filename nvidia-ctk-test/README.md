@@ -18,11 +18,15 @@ It will also ensure that INSIDE the container, we can successfully get all these
 
 Later, we can add additional dependencies (jupyter, fastai, fastbook, etc.)
 
-## Building and running the test
+## Prerequisites
 
-Prerequisite: Setup the host according to the ansible scripts.
+Setup the host according to the ansible scripts. (In ansible terms, the host machine is the "target node".)
 
-Then, build the docker image:
+Build or download the `cuda-pip-torch` base image. (See `cuda-pip-torch/README.md` for details.)
+
+## Build and run the test
+
+Build the docker image:
 
 ```sh
 docker build -t nvidia-ctk-test:latest .

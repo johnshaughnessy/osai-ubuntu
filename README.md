@@ -1,6 +1,6 @@
 # Open Source AI Machine Setup
 
-Scripts to help set up `cuda`, `docker`, and `nvidia-container-runtime` from a new installation of ubuntu server 23.10.
+This repo contains scripts to set up `cuda`, `docker`, and `nvidia-container-runtime` from a new installation of ubuntu server 23.10.
 
 The setup scripts assume you have a `control node` and a `target node`:
 
@@ -16,14 +16,13 @@ Setup starts with a new copy of Ubuntu Server 23.10 on the target node.
 In order to run the `ansible` setup script:
 
 - `ansible` needs to be installed on the control node,
-- `ssh` needs to be installed on the target node
+- the target node needs `python3`
 - the control node needs ssh access to the target machine
 - the ssh user on the target machine must be able to run `sudo`
-- the target node needs `python3`
 
-Change the hostname of the target node in `ansible/inventory.ini`. (Change the line that says `osai-redwood`.)
+Configure `ansible/inventory.ini` with the hostname of the target node. (Change the line that says `osai-redwood`.)
 
-Add the target node's ssh configuration to `~/.ssh/config` so that ansible is not confused when you tell it to ssh into the target node. For example, mine looks like this:
+Add the target node's ssh configuration to `~/.ssh/config` so that ansible knows how to ssh into the target node. For example, mine looks like this:
 
 ```
 Host osai-redwood
@@ -47,9 +46,11 @@ ansible-playbook setup.yml --ask-become-pass
 
 ## Testing the target node
 
-Clone this git directory on the target node.
+After setup, you can test the target node using docker images defined in repo.
 
-Navigate to the `nvidia-ctk-test` directory. Follow the instructions in `nvidia-ctk-test/README.md`.
+- Clone this git directory on the target node.
+- Navigate to the `nvidia-ctk-test` directory.
+- Follow the instructions in `nvidia-ctk-test/README.md`.
 
 A successfully configured system will show output that looks something like this:
 
@@ -79,14 +80,11 @@ CUDA Device 1: NVIDIA GeForce RTX 4090
 Device name: NVIDIA GeForce RTX 4090
 ```
 
-## Running `fastbook` in a jupyter notebook.
+The CUDA Device details should reflect what you have available on your system.
 
-Navigate to the `fastbook` directory. Follow the instructions in `fastbook/README.md`.
+## Running `fastbook` notebooks locally with jupyter lab.
 
-## Creating your own projects
+The `fast.ai` course on deep learning and machine learning comes includes several jupyter notebooks which are available for free on github: https://github.com/fastai/fastbook . They suggest running these notebooks in google colab, but if you prefer to run them locally, you can use the setup scripts in this repo.
 
-It takes several minutes to create docker images from scratch. It is faster to download them.
-
-Docker images with a base set of capabilities are built and uploaded to a Mozilla artifact registry on GCP. Use of these pre-built images is currently restricted.
-
-Read `base/README.md` for more information.
+- Navigate to the `fastbook` directory.
+- Follow the instructions in `fastbook/README.md`.

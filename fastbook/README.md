@@ -8,4 +8,4 @@ popd
 docker compose up -d
 ```
 
-Check nvidia dockers for [driver capabilities](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/docker-specialized.html#driver-capabilities).
+Check nvidia's docs for [driver capabilities](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/docker-specialized.html#driver-capabilities).
