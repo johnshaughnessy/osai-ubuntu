@@ -1,6 +1,10 @@
+// Generate the image with:
+// dot -Tpng nvidia-dependencies-simple.dot -o nvidia-dependencies-simple.png
+
 digraph dependencies {
     pad=0.2
     bgcolor=transparent
+    edge [color="#999999"];
 
     node [shape=box, style="rounded,filled", color="#de8f05", fontcolor="black", penwidth=4, fontsize=22];
 

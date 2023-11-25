@@ -120,6 +120,7 @@
     # libtinfo5 is a cuda dependency that doesn't seem to be available
     # through the standard apt sources (yet) on ubuntu 23.10,
     # so we download whatever version we can find online.
+    # (Check https://packages.ubuntu.com/search?keywords=libtinfo5 to see if a 23.10 version has been released.)
     - name: Download libtinfo5 package
       get_url:
         url: "{{ libtinfo5_url }}"
@@ -183,7 +184,7 @@
         update_cache: yes
         state: present
 
-    - name: Configure NVIDIA Container Runtime for Docker
+    - name: Configure NVIDIA Container Toolkit for Docker
       command: nvidia-ctk runtime configure --runtime=docker
 
     - name: Restart Docker

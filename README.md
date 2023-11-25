@@ -1,6 +1,8 @@
 # Open Source AI Machine Setup
 
-This repo contains scripts to set up `cuda`, `docker`, and `nvidia-container-runtime` from a new installation of ubuntu server 23.10.
+This repo contains scripts for setting up `docker`, `nvidia-driver`, and [`nvidia-container-toolkit`](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html) from a fresh installation of Ubuntu Server.
+
+!["NVIDIA Container Toolkit dependency graph"](/nvidia-dependencies-simple.png "NVIDIA Container Toolkit graph visualization")
 
 The setup scripts assume you have a `control node` and a `target node`:
 

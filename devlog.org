@@ -10,6 +10,13 @@ So, I will need to:
 
 This will also give me the chance to verify that everything is working as expected, as it's easy when working with ansible to run a step and then delete it from the setup script so that future installations don't work as intended, or to do things out of order as you're the setup script is being written.
 
+Also, I am installing more NVIDIA software to the base system than is strictly necessary, given that I plan to run all the programs in docker containers. I do not need CUDA installed on the base system -- only the NVIDIA driver(s). CUDA is included INSIDE the docker images / containers.
+
+I flashed a new image onto the thumb drive:
+#+begin_src bash
+dd bs=4M if=./ubuntu-22.04.3-live-server-amd64.iso of=/dev/sda status=progress oflag=sync
+#+end_src
+
 ** 2023-11-02
 *** Initial Setup
 
