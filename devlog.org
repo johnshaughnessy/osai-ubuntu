@@ -1,9 +1,9 @@
 * Development Log
 ** 2023-11-25
 *** Tightening up
-When I initially ran through setup, I used Ubuntu Server 23.10 because it was the latest version available. In retrospect, things would have been easier on Ubuntu Server 22.04 because NVIDIA officially supports ~cuda~ and ~nvidia-container-toolkit~ on 22.04. I was able to get everything working, but since ~pytorch~, ~cuda~, and ~nvidia~ driver dependencies are notoriously tricky for new users to get right, I decided to redo setup on 22.04 so that I can reduce risk of confusion / misconfiguration.
+When I initially ran through setup, I used Ubuntu Server 23.10 because it was the latest version available. In retrospect, things would have been easier on Ubuntu Server 22.04 because NVIDIA officially supports ~cuda~ and ~nvidia-container-toolkit~ on 22.04. I was able to get everything working, but since ~pytorch~, ~cuda~, and ~nvidia~ driver dependencies are notoriously tricky for new users to get right, I may want to go back and reinstall on 22.04.
 
-So, I will need to:
+To do so, I will need to:
 - Create a new installation media with Ubuntu Server 22.04
 - Install Ubuntu Server 22.04
 - Redo setup
@@ -16,6 +16,10 @@ I flashed a new image onto the thumb drive:
 #+begin_src bash
 dd bs=4M if=./ubuntu-22.04.3-live-server-amd64.iso of=/dev/sda status=progress oflag=sync
 #+end_src
+
+I updated the README.md to explain the NVIDIA dependencies in more detail (and what NVIDIA Container Toolkit does).
+
+At the moment I don't want to actually go through with reinstalling everything, because I would rather play with some AI applications (like Control Net). So I will worry about reinstalling on 22.04 later.
 
 ** 2023-11-02
 *** Initial Setup
