@@ -90,7 +90,7 @@ The CUDA Device details should reflect what you have available on your system.
 
 Installing `NVIDIA` drivers and packages can be confusing. Here is a simplified explanation of the most relevant packages:
 
-!["NVIDIA Container Toolkit simple graph"](/nvidia-dependencies-simple-2.png "NVIDIA Container Toolkit simple graph")
+!["NVIDIA Container Toolkit simple graph"](/docs/nvidia-dependencies-simple-2.png "NVIDIA Container Toolkit simple graph")
 
 | Package                    | Purpose                                                                      |
 | :------------------------- | :--------------------------------------------------------------------------- |
@@ -107,14 +107,14 @@ A slightly more accurate picture (with specific version numbers) is available he
 
 <details>
 <summary>Click to expand nvidia-dependencies-simple.png</summary>
-<img src="/nvidia-dependencies-simple.png" alt="NVIDIA Container Toolkit simple graph" title="NVIDIA Container Toolkit simple graph">
+<img src="/docs/nvidia-dependencies-simple.png" alt="NVIDIA Container Toolkit simple graph" title="NVIDIA Container Toolkit simple graph">
 </details>
 
 An even more detailed (but still incomplete) picture is available here:
 
 <details>
 <summary>Click to expand nvidia-dependencies.png</summary>
-<img src="/nvidia-dependencies.png" alt="NVIDIA Container Toolkit graph" title="NVIDIA Container Toolkit graph">
+<img src="/docs/nvidia-dependencies.png" alt="NVIDIA Container Toolkit graph" title="NVIDIA Container Toolkit graph">
 </details>
 
 If you are curious and want to inspect the dependency graph yourself, you can use:
@@ -153,4 +153,4 @@ ssh osai-redwood
 
 Note that you will want to set your `git remote` urls to the `ssh` variant:
 
-![github ssh](/github_ssh.png "Github SSH")
+![github ssh](/docs/github_ssh.png "Github SSH")
