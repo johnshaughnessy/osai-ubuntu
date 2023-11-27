@@ -1,4 +1,69 @@
 * Development Log
+** 2023-11-27
+*** Adding more projects
+So far, running projects in docker containers seems easy enough, and I have not spent very much time at all tracking down dependency issues. In fact, since all of my setup steps were written down, every time I run into something unexpected, it's extremely easy for me to retrace my steps and diagnose what's going wrong.
+
+I was able to diagnose a dependency-related issue and suggest a fix in a fastai notebook: https://github.com/fastai/diffusion-nbs/pull/45
+And the diffusers library: (linked from above)
+
+With my isolated environment.
+
+*** Automatic1111/StableDiffusionWebUI
+Fun with Stable Diffusion
+*** x11nvc
+Remote control of X desktop apps.
+
+Hard to get a web browser running inside of a docker container without issue. Hmm.
+
+*** Memory Cache
+**** privateGPT
+Minor build issue resolved with a hack in the dockerfile:
+
+#+begin_src
+RUN poetry run pip3 install transformers[torch]
+#+end_src
+
+Perhaps the project needed an older version of cuda? It seems that way based on the output.
+
+
+#+begin_src
+ => => #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 849.3/849.3 kB 7.9 MB/s eta 0:00:00
+ => => # Collecting nvidia-cuda-cupti-cu11==11.7.101 (from torch!=1.12.0,>=1.10->transformers[torch])
+ => => #   Downloading nvidia_cuda_cupti_cu11-11.7.101-py3-none-manylinux1_x86_64.whl (11.8 MB)
+ => => #      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.8/11.8 MB 7.3 MB/s eta 0:00:00
+ => => # Collecting nvidia-cudnn-cu11==8.5.0.96 (from torch!=1.12.0,>=1.10->transformers[torch])
+ => => #   Downloading nvidia_cudnn_cu11-8.5.0.96-2-py3-none-manylinux1_x86_64.whl (557.1 MB)
+#+end_src
+
+This fix worked, but I'm not sure why or how the dependency is / was supposed to be tracked.
+
+**** Firefox
+For memory cache, I need to build a custom version of Firefox.
+
+I'd like to try just building a firefox extension, but after an hour of fiddling and failing to get jsPDF loaded in my extension properly I just decided to follow Liv's guide.
+
+The guide says:
+
+#+begin_src
+Modify tabs.json to add a new property in the printerSettings JSON properties:
+...
+For me, this was at line 408 after the property footerRight was declared.
+#+end_src
+
+However, line 408 for me (~footerRight~) was in PageSettings. Perhaps it's a typo?
+We'll see...
+
+I'll just collect notes as I go and then (once I get everything working), create a pull request with any suggested changes.
+
+#+begin_src
+    Modify ext-tabs.js, replacing the code for the saveAsPDF API with the code that follows:
+#+end_src
+
+Is this parent/ext-tabs.js or child/ext-tabs.js?
+
+The code snippet for ~saveAsPDF~ should have a trailing comma.
+
+
 ** 2023-11-25
 *** Tightening up
 When I initially ran through setup, I used Ubuntu Server 23.10 because it was the latest version available. In retrospect, things would have been easier on Ubuntu Server 22.04 because NVIDIA officially supports ~cuda~ and ~nvidia-container-toolkit~ on 22.04. I was able to get everything working, but since ~pytorch~, ~cuda~, and ~nvidia~ driver dependencies are notoriously tricky for new users to get right, I may want to go back and reinstall on 22.04.

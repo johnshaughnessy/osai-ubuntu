@@ -1,0 +1,44 @@
+FROM nvidia/cuda:12.2.2-devel-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-pip \
+    python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m pip install --upgrade pip
+
+# Install PyTorch compatible with CUDA 12.3 (adjust the version as needed)
+RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu123
+
+# Preconfigure tzdata for New York City timezone
+RUN echo 'tzdata tzdata/Areas select America' | debconf-set-selections
+RUN echo 'tzdata tzdata/Zones/America select New_York' | debconf-set-selections
+
+RUN apt-get update && apt-get install -y git sudo pipx inotify-tools
+
+RUN useradd -ms /bin/bash john
+RUN mkdir -p /etc/sudoers.d
+RUN echo "john ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/john
+USER john
+
+RUN mkdir -p /home/john/code/privateGPT/
+WORKDIR /home/john/code/privateGPT
+
+COPY code/privateGPT/requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+ENV PATH="/home/john/.local/bin:${PATH}"
+
+RUN pipx install poetry
+COPY code/privateGPT/poetry.lock poetry.lock
+COPY code/privateGPT/pyproject.toml pyproject.toml
+RUN poetry install --no-root
+
+# Hack: I need to install transforms[torch] separately for some reason.
+# Otherwise, I got an error when ingesting the docs.
+# Perhaps it's a cuda version mismatch? Some details in devlog.org.
+RUN poetry run pip3 install transformers[torch]
+
+CMD cp /home/john/code/.env .env && poetry run bash
