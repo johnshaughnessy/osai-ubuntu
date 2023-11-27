@@ -1,3 +1,0 @@
-For example:
-
-git clone https://github.com/fastai/diffusion-nbs.git

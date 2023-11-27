@@ -1,2 +1,4 @@
-code/diffusion-nbs
-code/.ipynb_checkpoints
+code/*
+!code/.gitkeep
+huggingface-cache/*
+!huggingface-cache/.gitkeep
