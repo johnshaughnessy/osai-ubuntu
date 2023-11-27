@@ -6,6 +6,7 @@ RUN useradd -ms /bin/bash john
 RUN mkdir -p /etc/sudoers.d
 RUN echo "john ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/john
 USER john
-WORKDIR /home/john/code
+WORKDIR /home/john/
 
-RUN pip install -Uq jupyterlab
+RUN pip install -Uq jupyterlab ipywidgets
+ENV PATH="/home/john/.local/bin:${PATH}"
