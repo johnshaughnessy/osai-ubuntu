@@ -2,9 +2,8 @@ code/*
 !code/.gitkeep
 !code/.env
 !code/.env.sample
-!code/run-privategpt.sh
+!code/run-backend.sh
 !code/autoingest.sh
-!code/sync.sh
 docs/*
 !docs/.gitkeep
 vectorstore/*

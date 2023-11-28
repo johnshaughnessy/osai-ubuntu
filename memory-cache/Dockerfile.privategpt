@@ -41,4 +41,4 @@ RUN poetry install --no-root
 # Perhaps it's a cuda version mismatch? Some details in devlog.org.
 RUN poetry run pip3 install transformers[torch]
 
-CMD cp /home/john/code/.env .env && poetry run bash
+CMD ../run-backend.sh

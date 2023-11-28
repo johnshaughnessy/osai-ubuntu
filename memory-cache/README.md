@@ -1,10 +1,8 @@
-# Configs for Memory Cache
+# privateGPT in Docker
 
 [Memory Cache](https://memorycache.ai/) is a project that connects a user's local documents to [privateGPT](https://github.com/imartinez/privateGPT) and integrates with Firefox via an extension to easily add to a personal knowledge repo.
 
-This directory has configs and scripts to help run privateGPT on the remote node, so that memory cache can interact with it.
-
-In particular, it includes:
+These scripts/configs are meant to help run the Memory Cache / privateGPT backend in a docker container. In particular, this directory includes:
 
 - a docker image for running privateGPT's primordial branch,
 - configuration files for privateGPT,
@@ -14,11 +12,18 @@ In particular, it includes:
 
 (The scripts are nothing special: they are just thin wrappers around `docker` commands.)
 
-However, it does not help with building the custom version of firefox or installing the memory cache extension, because those steps are already documented on the [memory cache website](https://memorycache.ai/) and you can choose whether to run the memory cache frontend (firefox) on the control node or the remote node.
+These configs focus on the privateGPT backend. The steps for setting up the front-end are well documented in the [Memory Cache README.md](https://github.com/misslivirose/memory-cache#memory-cache).
 
 # Usage
 
-## Set up the remote node
+After first-time setup:
+
+- Run `sync.sh` on the control node
+- Run `run.sh` on the remote node.
+
+# Setup
+
+## `privateGPT` backend
 
 0. The scripts assume that the `osai-ubuntu` repo is cloned on the remote node at `/home/john/osai`. Clone it there if it isn't already.
 
@@ -42,16 +47,12 @@ docker build -f Dockerfile.privategpt -t privategpt .
 wget https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin -O models/ggml-gpt4all-j-v1.3-groovy.bin
 ```
 
-4. Configure the .env file (`code/.env`) if you wish to change the defaults.
+4. (Optionally) Configure the .env file (`code/.env`) if you wish to change the defaults.
 
-5. Run the docker container with `./run.sh`
+5. Run the docker container with `./run.sh`.
 
-## Set up Firefox
+## `Memory Cache` frontend
 
-Memory Cache currently requires a custom build of firefox. Instructions for building it are on its [github page](https://github.com/misslivirose/memory-cache).
+`Memory Cache` currently requires a custom build of firefox. Instructions for building it are on its [github page](https://github.com/misslivirose/memory-cache).
 
-If (like me) you want to run firefox on the control node and run privateGPT on the remote node, the `code/sync.sh` script can be used to automatically copy files from the control node to the remote node. Simply run it from the control node.
-
-On the remote node, you can autoingest the new files by running the `code/autoingest.sh` script from inside the running docker container.
-
-It's useful to have two terminals open in the docker container: one for running the autoingest script, and one for running the privateGPT server. The `code/exec.sh` script can be used to open a second terminal in the running docker container.
+If you want to run firefox on the control node and run `privateGPT` on the remote node, the `sync.sh` script automatically copies files from the control node to the remote node. Simply run it from the control node. (Edit the script to set your source and destination directories appropriately.)
