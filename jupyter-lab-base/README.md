@@ -60,6 +60,7 @@ docker run \
      --name jupyter-lab-fastai-diffusion-nbs \
      --publish 8000:8000 \
      --mount type=bind,source="$(pwd)"/code,target=/home/john/code \
+     --mount type=bind,source="$(pwd)"/huggingface-cache,target=/home/john/.cache/huggingface \
      --user "john":"john" \
      jupyter-lab-fastai-diffusion-nbs \
      /home/john/code/run-jupyter-lab.sh
