@@ -5,7 +5,7 @@ docker run \
     --gpus all \
     -it \
     --name privategpt \
-    --publish 8001:8001 \
+    --publish 8002:8002 \
     --mount type=bind,source="$(pwd)"/code,target=/home/john/code \
     --mount type=bind,source="$(pwd)"/docs,target=/home/john/code/privateGPT/source_documents \
     --mount type=bind,source="$(pwd)"/vectorstore,target=/home/john/vectorstore \
