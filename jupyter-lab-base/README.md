@@ -24,14 +24,14 @@ docker run \
     --gpus all \
     -it \
     --name jupyter-lab-base \
-    --publish 8000:8000 \
+    --publish   7002:7002 \
     --mount type=bind,source="$(pwd)"/code,target=/home/john/code \
     --user "john":"john" \
     jupyter-lab-base \
     /home/john/code/run-jupyter-lab.sh
 ```
 
-3. Access it via http://192.168.2.234:8000/ (replacing the ip address with the target node's IP).
+3. Access it via http://192.168.2.234:7002/ (replacing the ip address with the target node's IP).
 
 # Running `fastai/diffusion-nbs`
 
@@ -58,7 +58,7 @@ docker run \
      --gpus all \
      -it \
      --name jupyter-lab-fastai-diffusion-nbs \
-     --publish 8000:8000 \
+     --publish 7002:7002 \
      --mount type=bind,source="$(pwd)"/code,target=/home/john/code \
      --mount type=bind,source="$(pwd)"/huggingface-cache,target=/home/john/.cache/huggingface \
      --user "john":"john" \
@@ -66,7 +66,7 @@ docker run \
      /home/john/code/run-jupyter-lab.sh
 ```
 
-5. Access it via http://192.168.2.234:8000/ (replacing the ip address with the target node's IP).
+5. Access it via http://192.168.2.234:7002/ (replacing the ip address with the target node's IP).
 
 ## Note to self [John]
 
@@ -88,7 +88,7 @@ docker run \
     --gpus all \
     -it \
     --name jupyter-lab-base \
-    --publish 8000:8000 \
+    --publish 7002:7002 \
     --mount type=bind,source="$(pwd)"/code,target=/home/john/code \
     --mount type=bind,source="$(pwd)"/huggingface-cache,target=/home/john/.cache/huggingface \
     --user "john":"john" \
