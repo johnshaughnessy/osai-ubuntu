@@ -56,3 +56,5 @@ Device name: NVIDIA GeForce RTX 4090
 CUDA Device 1: NVIDIA GeForce RTX 4090
 Device name: NVIDIA GeForce RTX 4090
 ```
+
+The CUDA Device details should reflect what you have available on your system.
