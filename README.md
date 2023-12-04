@@ -46,4 +46,6 @@ apt-cache depends cuda
 
 ## Running and developing applications
 
-Users are encouraged to create new docker images as needed. The `Dockerfile`s in this repo are good starting points.
+Users are encouraged to create new docker images as needed.
+
+The [`OSAI Apps`](https://github.com/johnshaughnessy/osai-apps) repo has several examples and contains `Dockerfile`s that may be good starting points.
