@@ -1,50 +1,39 @@
 # Test nvidia-container-toolkit
 
-The purpose of this docker container is to test whether all of the dependencies are set up and configured correctly to enable cuda-powered docker containers.
+This test verifies that our machine can run gpu-accelerated docker containers.
 
-The ansible script should be enough to create a basic setup.
+Installed on the host:
 
-This test will ensure:
+- Docker
+- NVIDIA Container Toolkit
+- NVIDIA Driver
 
-- The nvidia driver is installed
-- Docker is installed
-- Cuda is working (inside of docker)
+Installed in the container:
 
-It will also ensure that INSIDE the container, we can successfully get all these working together in harmony:
-
-- python3
+- python
+- pip
 - pytorch
 - cuda
-
-Later, we can add additional dependencies (jupyter, fastai, fastbook, etc.)
-
-## Prerequisites
-
-Setup the host according to the ansible scripts. (In ansible terms, the host machine is the "target node".)
-
-Build or download the `cuda-pip-torch` base image. (See `cuda-pip-torch/README.md` for details.)
 
 ## Build and run the test
 
 Build the docker image:
 
 ```sh
-docker build -t nvidia-ctk-test:latest .
+docker build -t nvidia-ctk-test .
 ```
 
-> Building the image may take several minutes to complete the first time.
+> Building the image takes 10-20 minutes.
 
-And run it:
+Run it:
 
 ```sh
-docker run --gpus all nvidia-ctk-test:latest
+docker run --gpus all nvidia-ctk-test
 ```
 
 A successfully configured system will show output that looks something like this:
 
 ```
-john@osai-redwood:~/osai/nvidia-ctk-test$ docker run --gpus all nvidia-ctk-test
-
 ==========
 == CUDA ==
 ==========
