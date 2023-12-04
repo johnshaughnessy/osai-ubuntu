@@ -6,7 +6,7 @@ The setup uses `Docker`, `nvidia-driver`, and [`NVIDIA Container Toolkit`](https
 
 ## Installation
 
-To set up a new machine, see `ansible/README.md`.
+To set up a new machine, see [`ansible/README.md`](./ansible/README.md).
 
 ## Background
 
