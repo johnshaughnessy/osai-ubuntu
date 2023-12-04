@@ -1,6 +1,6 @@
-# Test nvidia-container-toolkit
+# NVIDIA CTK Test
 
-This test verifies that our machine can run gpu-accelerated docker containers.
+This test verifies that the host can run gpu-accelerated docker containers.
 
 Installed on the host:
 
@@ -13,7 +13,7 @@ Installed in the container:
 - python
 - pip
 - pytorch
-- cuda
+- CUDA
 
 ## Build and run the test
 
@@ -23,7 +23,7 @@ Build the docker image:
 docker build -t nvidia-ctk-test .
 ```
 
-> Building the image takes 10-20 minutes.
+> Building the image may take up to ~30 minutes.
 
 Run it:
 
@@ -38,7 +38,7 @@ A successfully configured system will show output that looks something like this
 == CUDA ==
 ==========
 
-CUDA Version 12.2.2
+CUDA Version 12.1.1
 
 Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 
@@ -50,11 +50,9 @@ A copy of this license is made available in this container at /NGC-DL-CONTAINER-
 
 CUDA version: 12.1
 CUDA available: True
-Number of CUDA devices available: 2
-CUDA Device 0: NVIDIA GeForce RTX 4090
-Device name: NVIDIA GeForce RTX 4090
-CUDA Device 1: NVIDIA GeForce RTX 4090
-Device name: NVIDIA GeForce RTX 4090
+Number of CUDA devices available: 1
+CUDA Device 0: Tesla T4
+Device name: Tesla T4
 ```
 
 The CUDA Device details should reflect what you have available on your system.
