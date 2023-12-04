@@ -11,9 +11,9 @@ For setup, you'll need a `control node` and a `target node`:
 - The `control node` is the computer where you will issue `ansible` commands.
 - The `target node` is the (remote) computer that you are trying to configure.
 
-The target node should have a fresh installation of Ubuntu Server 23.10.
+The target node should be running Ubuntu 22.04.
 
-> In retrospect, things would have been easier with 22.04, because NVIDIA officially supports `cuda` and `nvidia-container-toolkit` on ubuntu 22.04.
+> The latest Ubuntu version is 23.10, but we use 22.04 because NVIDIA officially supports `cuda` and `nvidia-container-toolkit` on Ubuntu 22.04.
 
 In order to run the `ansible` setup script:
 
@@ -22,9 +22,7 @@ In order to run the `ansible` setup script:
 - the control node needs ssh access to the target machine
 - the ssh user on the target machine must be able to run `sudo`
 
-Configure `ansible/inventory.ini` with the hostname of the target node. (Change the line that says `osai-redwood`.)
-
-Add the target node's ssh configuration to `~/.ssh/config` so that ansible knows how to ssh into the target node. For example, mine looks like this:
+Optionally, add the target node's ssh configuration to `~/.ssh/config` so that ansible knows how to ssh into the target node. For example, mine looks like this:
 
 ```
 Host osai-redwood
@@ -37,14 +35,15 @@ Host osai-redwood
 
 ### Running the setup script
 
-Run the ansible setup script from inside the ansible directory:
+Run the playbook with the command below, replacing `host` with the host name or ip address of the target node.
 
 ```sh
-cd ansible/
-ansible-playbook setup.yml --ask-become-pass
+ansible-playbook setup-yml -i "host," --ask-become-pass -vvv
 ```
 
-> Some of the steps in the playbook take several minutes to complete.
+> The machine will reboot after installing the NVIDIA driver.
+
+> Setup takes 10-20 minutes to complete.
 
 ### Testing the target node
 

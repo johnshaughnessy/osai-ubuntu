@@ -1,15 +1,24 @@
 ---
 - name: Setup Server
-  hosts: servers
+  hosts: all
   vars:
     libtinfo5_url: "http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.4-2_amd64.deb"
     libtinfo5_deb: "/tmp/libtinfo5_6.4-2_amd64.deb"
   become: yes
   tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade all apt packages
+      apt:
+        upgrade: dist
+        force_apt_get: yes
+
     - name: Install nice-to-have packages
       apt:
         name:
-          - bat #batcat
+          - bat # batcat
           - curl
           - git
           - htop
@@ -66,97 +75,6 @@
         groups: docker
         append: yes
     # -------------------------- END DOCKER -------------------------- #
-
-    # -------------------------- CUDA -------------------------- #
-
-    # NOTE: The latest version of GCC (13.2.0 at the time of this comment) is newer than what CUDA supports.
-    # When trying to compile a cuda program with nvcc, it issues this error:
-    #
-    #     error: #error -- unsupported GNU version! gcc versions later than 12 are not supported!
-    #            The nvcc flag '-allow-unsupported-compiler' can be used to override this version check;
-    #            however, using an unsupported host compiler may cause compilation failure or incorrect run time execution.
-    #            Use at your own risk.
-    #
-    # Therefore, if we see gcc / cuda errors, we should install an alternative version of gcc.
-    # There are many available:
-    #
-    #     apt-cache search gcc
-    #
-    # NOTE: The build-essential package also includes other packages.
-    #
-    # Depends: libc6-dev | libc-dev, gcc (>= 4:12.3), g++ (>= 4:12.3), make, dpkg-dev (>= 1.17.11)
-    #
-    # I didn't realize I could JUST install gcc. I'm not sure which (if any) of the others are actually necessary.
-    - name: Install gcc
-      apt:
-        name:
-          - build-essential
-        state: latest
-
-    - name: Install necessary kernel headers
-      apt:
-        name:
-          - linux-headers-6.5.0-10-generic
-          - linux-headers-generic
-        state: present
-        update_cache: yes
-
-    # The CUDA Keyring package includes the key that we have to trust when installing nvidia's cuda packages
-    # https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_network
-    - name: Install CUDA Keyring
-      get_url:
-        url: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
-        dest: /tmp/cuda-keyring_1.1-1_all.deb
-        force: no
-
-    - name: Install CUDA Keyring Package
-      command:
-        cmd: dpkg -i /tmp/cuda-keyring_1.1-1_all.deb
-
-    - name: Update Repositories
-      apt:
-        update_cache: yes
-
-    # libtinfo5 is a cuda dependency that doesn't seem to be available
-    # through the standard apt sources (yet) on ubuntu 23.10,
-    # so we download whatever version we can find online.
-    # (Check https://packages.ubuntu.com/search?keywords=libtinfo5 to see if a 23.10 version has been released.)
-    - name: Download libtinfo5 package
-      get_url:
-        url: "{{ libtinfo5_url }}"
-        dest: "{{ libtinfo5_deb }}"
-        force: no
-
-    - name: Install libtinfo5 package
-      ansible.builtin.apt:
-        deb: "{{ libtinfo5_deb }}"
-
-    - name: Install CUDA dependencies
-      apt:
-        name:
-          - libtinfo5
-        state: latest
-
-    # There are alternative meta packages of CUDA available
-    # The "cuda" package installs everything, including the proprietary drivers
-    # You can switch to the open drivers if you prefer
-    # https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#switching-between-driver-module-flavors
-    #
-    # This is a large download. Ansible was paused here for a long time.
-    - name: Install CUDA (Full Package including Driver)
-      apt:
-        name: cuda
-        state: latest
-
-    - name: Add CUDA to PATH for all users
-      blockinfile:
-        path: /etc/profile.d/cuda.sh
-        create: yes
-        block: |
-          #!/bin/sh
-          export PATH=$PATH:/usr/local/cuda/bin
-
-    # -------------------------- END CUDA -------------------------- #
 
     # -------------------------- NVIDIA-CONTAINER-TOOLKIT -------------------------- #
 
@@ -226,3 +144,30 @@
         state: present
 
     # -------------------------- END GOOGLE CLOUD CLI -------------------------- #
+
+    # -------------------------- NVIDIA DRIVER -------------------------- #
+    - name: Get the running kernel version
+      command: uname -r
+      register: kernel_version
+
+    - name: Install gcc and necessary kernel headers
+      apt:
+        name:
+          - build-essential
+          - "linux-headers-{{ kernel_version.stdout }}"
+        state: latest
+        update_cache: yes
+
+    - name: Add Nvidia driver repository
+      apt_repository:
+        repo: ppa:graphics-drivers/ppa
+
+    - name: Install Nvidia Driver 545
+      apt:
+        name: nvidia-driver-545
+        state: latest
+        update_cache: yes
+
+    - name: Reboot the machine
+      reboot:
+    # -------------------------- END NVIDIA DRIVER -------------------------- #
