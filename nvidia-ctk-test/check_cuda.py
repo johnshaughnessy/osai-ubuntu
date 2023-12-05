@@ -1,6 +1,7 @@
 import torch
 
 def check_cuda():
+    print(f"PyTorch version: {torch.__version__}")
     print(f"CUDA version: {torch.version.cuda}")
     cuda_available = torch.cuda.is_available()
     print(f"CUDA available: {cuda_available}")
