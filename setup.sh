@@ -69,6 +69,14 @@ nvidia-ctk runtime configure --runtime=docker
 # Restart Docker
 sudo systemctl restart docker
 
+if [ -n "$(nvidia-smi)" ]; then
+  echo
+  echo "[OSAI] Skipping NVIDIA Driver 545 installation: an NVIDIA driver is already installed."
+  echo "[OSAI] Installation complete."
+  echo
+  exit 0
+fi
+
 echo
 echo "[OSAI] Installing NVIDIA Driver 545."
 echo
