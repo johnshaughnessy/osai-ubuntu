@@ -2,11 +2,15 @@
 
 This repo contains scripts to configure Ubuntu 22.04 for running and developing AI applications.
 
-The setup uses `Docker`, `nvidia-driver`, and [`NVIDIA Container Toolkit`](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html) to run applications in isolated containers. Dependency management is simplified by having each application specify the versions of python, pytorch, CUDA, or other system packages it needs.
+The setup installs `Docker`, `nvidia-driver`, and [`NVIDIA Container Toolkit`](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html) to run applications in isolated containers. Dependency management is simplified by having each application specify the versions of python, pytorch, CUDA, or other system packages it needs.
 
 ## Installation
 
-To set up a new machine, see [`ansible/README.md`](./ansible/README.md).
+Run `./setup.sh` on the Ubuntu machine you want configured.
+
+Alternatively, an `ansible` playbook is available: [`ansible/README.md`](./ansible/README.md).
+
+After setup, verify that the target node has been setup correctly by running the [nvidia-ctk-test](../nvidia-ctk-test/README.md).
 
 ## Background
 

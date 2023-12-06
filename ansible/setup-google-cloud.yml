@@ -1,0 +1,35 @@
+---
+- name: Setup Google Cloud
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install gcloud cli dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+          - curl
+          - sudo
+        state: latest
+
+    - name: Ensure google-cloud-sdk.list exists and contains the required repo line
+      ansible.builtin.lineinfile:
+        path: /etc/apt/sources.list.d/google-cloud-sdk.list
+        line: "deb [signed-by=/usr/share/keyrings/cloud.google.asc] https://packages.cloud.google.com/apt cloud-sdk main"
+        create: yes
+        state: present
+
+    - name: Download cloud.google.asc if it does not exist
+      ansible.builtin.get_url:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        dest: /usr/share/keyrings/cloud.google.asc
+        force: no
+
+    - name: Update APT cache and install gcloud CLI
+      ansible.builtin.apt:
+        update_cache: yes
+        name: google-cloud-cli
+        state: present
+
+    # -------------------------- END GOOGLE CLOUD CLI -------------------------- #

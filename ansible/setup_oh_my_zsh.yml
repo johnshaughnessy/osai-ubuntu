@@ -1,0 +1,38 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Zsh
+      apt:
+        name: zsh
+        state: present
+
+    - name: Set Zsh as the default shell
+      user:
+        name: "{{ ansible_user_id }}"
+        shell: /usr/bin/zsh
+
+    - name: Install oh-my-zsh
+      shell: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      args:
+        creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
+
+    - name: Install zsh-autosuggestions plugin
+      git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+
+    - name: Install zsh-syntax-highlighting plugin
+      git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+
+    - name: Configure .zshrc file
+      blockinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        block: |
+          source $ZSH/oh-my-zsh.sh
+          ZSH_THEME="robbyrussell"
+          plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        insertafter: EOF
+        create: yes
