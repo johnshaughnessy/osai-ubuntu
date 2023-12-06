@@ -8,6 +8,9 @@ The setup installs `Docker`, `nvidia-driver`, and [`NVIDIA Container Toolkit`](h
 
 Run `./setup.sh` on the Ubuntu machine you want configured.
 
+> You will need to reboot the machine after setup (because of `nvidia-driver`).
+> If you already had `nvidia-driver` installed when you ran the script, you will only need to logout and login again (so that your user is added to the `docker` group).
+
 Alternatively, an `ansible` playbook is available: [`ansible/README.md`](./ansible/README.md).
 
 After setup, verify that the target node has been setup correctly by running the [nvidia-ctk-test](../nvidia-ctk-test/README.md).

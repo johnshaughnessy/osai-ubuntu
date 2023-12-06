@@ -28,7 +28,7 @@ sudo mkdir -p /etc/apt/keyrings
 sudo chmod 0755 /etc/apt/keyrings
 
 # Add Docker's official GPG key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 # Set correct permissions for Docker GPG key
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
@@ -46,12 +46,17 @@ sudo apt-get install -y docker-ce
 sudo usermod -aG docker $USER
 
 echo
+echo "[OSAI] Your user account has been added to the docker group."
+echo "[OSAI] You will need to logout and log back in for this change to take effect."
+echo
+
+echo
 echo "[OSAI] Installing NVIDIA Container Toolkit."
 echo
 
 # Download the NVIDIA repository GPG key if it does not exist
 if [ ! -f /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg ]; then
-  curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+  curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 fi
 
 # Add the NVIDIA repository
