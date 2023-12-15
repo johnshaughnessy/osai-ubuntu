@@ -69,7 +69,7 @@ sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit
 
 # Configure NVIDIA Container Toolkit for Docker
-nvidia-ctk runtime configure --runtime=docker
+sudo nvidia-ctk runtime configure --runtime=docker
 
 # Restart Docker
 sudo systemctl restart docker
